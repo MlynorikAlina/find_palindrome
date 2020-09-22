@@ -1,69 +1,63 @@
 package com.bsu;
 
 import java.util.Arrays;
+import java.util.Collection;
 import java.util.Scanner;
 
 public class Main {
     public static void main(String[] args) {
         try (Scanner scanner = new Scanner((System.in))) {
             String inputText = scanner.nextLine();
-
-            System.out.println("Palindrome: " + getMaxPalindrome(inputText));
+            String maxPalindrome = getMaxPalindrome(inputText);
+            if (maxPalindrome.length() == 0) System.out.println("No palindrome word in the text");
+            System.out.println("Palindrome found: " + maxPalindrome);
         } catch (Exception ex) {
             System.out.println("Exception: " + ex);
         }
     }
 
+    public static boolean isPalindrome(String input) {
+        String reversedHalf = reverseString(input.substring(0, input.length() / 2));
+        if (input.length() % 2 == 0)
+            return reversedHalf.equalsIgnoreCase(input.substring(input.length() / 2));
+        else
+            return reversedHalf.equalsIgnoreCase(input.substring(input.length() / 2 + 1));
+    }
+
     public static String getMaxPalindrome(String input) {
-        return MaxPalindrome(findPalindromeRadius(input.toCharArray()), input);
+        String tempWord, maxPalindrome = "";
+        int index1 = 0, index2, tempIndex;
+
+        while (index1 < input.length()) {
+            while ((index1 < input.length()) && (input.charAt(index1) == '.' || input.charAt(index1) == ',' || input.charAt(index1) == ' '))
+                ++index1;
+            index2 = findIndexOf(input, index1 + 1, ' ', ',', '.');
+            tempWord = input.substring(index1, index2);
+            if (isPalindrome(tempWord) && tempWord.length() > maxPalindrome.length()) maxPalindrome = tempWord;
+            index1 = ++index2;
+        }
+        return maxPalindrome;
     }
 
-    static int[][] findPalindromeRadius(char[] input) {
-        int leftBorder, rightBorder;
-        int[][] palindromeRadius = new int[2][input.length];
-
-        for (int palindromeKind = 0; palindromeKind <= 1; ++palindromeKind) {
-            leftBorder = rightBorder = 0;
-            for (int counter = 0; counter < input.length; ++counter) {
-                if (counter < rightBorder) {
-                    palindromeRadius[palindromeKind][counter] =
-                            Math.min(1 - palindromeKind + rightBorder - counter,
-                                    palindromeRadius[palindromeKind][1 - palindromeKind + rightBorder + leftBorder - counter]);
-                }
-
-                int tempLeftBorder = counter - palindromeRadius[palindromeKind][counter];
-                int tempRightBorder = counter + palindromeRadius[palindromeKind][counter] - 1 + palindromeKind;
-                while (tempLeftBorder - 1 >= 0 && tempRightBorder + 1 < input.length && input[tempLeftBorder - 1] == input[tempRightBorder + 1]) {
-                    palindromeRadius[palindromeKind][counter]++;
-                    tempLeftBorder--;
-                    tempRightBorder++;
-                }
-
-                if (tempRightBorder > rightBorder) {
-                    leftBorder = tempLeftBorder;
-                    rightBorder = tempRightBorder;
-                }
-
-            }
+    static int findIndexOf(String string, int startIndex, char... args) {
+        int index = string.length(), tempIndex;
+        for (char symbol : args) {
+            tempIndex = string.indexOf(symbol, startIndex + 1);
+            if (tempIndex != -1 && tempIndex < index) index = tempIndex;
         }
-        return palindromeRadius;
+        return index;
     }
 
-    static String MaxPalindrome(int[][] radius, String input) {
-        int maxIndex = 0, maxRadius = 0, maxIndexKind = 0;
-        for (int ind = 0; ind < radius[0].length; ind++) {
-            if (maxRadius < radius[0][ind]) {
-                maxIndex = ind;
-                maxRadius = radius[0][ind];
-                maxIndexKind = 0;
-            }
-            if (maxRadius <= radius[1][ind]) {
-                maxIndex = ind;
-                maxRadius = radius[1][ind];
-                maxIndexKind = 1;
-            }
+    static String reverseString(String string) {
+        char[] convertedString = string.toCharArray();
+        char buffer;
+        for (int ind = 0; ind < convertedString.length / 2; ++ind) {
+           buffer = convertedString[ind];
+           convertedString[ind] = convertedString[convertedString.length - 1 - ind];
+           convertedString[convertedString.length - 1 - ind] = buffer;
         }
-        return input.substring(maxIndex - maxRadius, maxIndex + maxRadius + maxIndexKind);
+        String result = String.valueOf(convertedString);
+        return result;
     }
 
 }

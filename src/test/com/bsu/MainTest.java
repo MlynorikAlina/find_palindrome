@@ -9,11 +9,11 @@ public class MainTest {
 
     @Test
     public void getMaxPalindromeTest() {
-        assertEquals(getMaxPalindrome("aaa"), "aaa");
+        assertEquals(getMaxPalindrome("a"), "a");
         assertEquals(getMaxPalindrome("aaaa"), "aaaa");
-        assertEquals(getMaxPalindrome("aaababaac"), "aababaa");
-        assertEquals(getMaxPalindrome("aaababba"), "abba");
-        assertEquals(getMaxPalindrome("aa.aa..aa...a"), ".aa..aa.");
-        assertEquals(getMaxPalindrome(""), "");
+        assertEquals(getMaxPalindrome(".aaa cbabc aac"), "cbabc");
+        assertEquals(getMaxPalindrome("aa, abba, a."), "abba");
+        assertEquals(getMaxPalindrome("aa.aa..aa...a"), "aa");
+        assertEquals(getMaxPalindrome("...."), "");
     }
 }
