@@ -29,7 +29,8 @@ public class Main {
 
     public static String getMaxPalindrome(String input) {
         String maxPalindrome = "";
-        for (String tempWord : input.split("\\.|,| ")) {
+        String[] wordsArray = input.split("\\.|,| ");
+        for (String tempWord : wordsArray) {
             if (isPalindrome(tempWord) && tempWord.length() > maxPalindrome.length()) maxPalindrome = tempWord;
         }
         return maxPalindrome;
