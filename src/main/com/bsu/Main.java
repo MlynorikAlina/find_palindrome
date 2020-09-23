@@ -6,11 +6,14 @@ import java.util.Scanner;
 
 public class Main {
     public static void main(String[] args) {
-        try (Scanner scanner = new Scanner((System.in))) {
+        try (Scanner scanner = new Scanner(System.in)) {
             String inputText = scanner.nextLine();
             String maxPalindrome = getMaxPalindrome(inputText);
-            if (maxPalindrome.length() == 0) System.out.println("No palindrome word in the text");
-            System.out.println("Palindrome found: " + maxPalindrome);
+            if (maxPalindrome.length() == 0) {
+                System.out.println("No palindrome word in the text");
+            } else {
+                System.out.println("Palindrome found: " + maxPalindrome);
+            }
         } catch (Exception ex) {
             System.out.println("Exception: " + ex);
         }
@@ -25,16 +28,9 @@ public class Main {
     }
 
     public static String getMaxPalindrome(String input) {
-        String tempWord, maxPalindrome = "";
-        int index1 = 0, index2, tempIndex;
-
-        while (index1 < input.length()) {
-            while ((index1 < input.length()) && (input.charAt(index1) == '.' || input.charAt(index1) == ',' || input.charAt(index1) == ' '))
-                ++index1;
-            index2 = findIndexOf(input, index1 + 1, ' ', ',', '.');
-            tempWord = input.substring(index1, index2);
+        String maxPalindrome = "";
+        for (String tempWord : input.split("\\.|,| ")) {
             if (isPalindrome(tempWord) && tempWord.length() > maxPalindrome.length()) maxPalindrome = tempWord;
-            index1 = ++index2;
         }
         return maxPalindrome;
     }
@@ -52,9 +48,9 @@ public class Main {
         char[] convertedString = string.toCharArray();
         char buffer;
         for (int ind = 0; ind < convertedString.length / 2; ++ind) {
-           buffer = convertedString[ind];
-           convertedString[ind] = convertedString[convertedString.length - 1 - ind];
-           convertedString[convertedString.length - 1 - ind] = buffer;
+            buffer = convertedString[ind];
+            convertedString[ind] = convertedString[convertedString.length - 1 - ind];
+            convertedString[convertedString.length - 1 - ind] = buffer;
         }
         String result = String.valueOf(convertedString);
         return result;
