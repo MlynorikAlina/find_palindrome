@@ -1,7 +1,8 @@
 package com.bsu;
 
 import java.util.Arrays;
-import java.util.Collection;
+import java.util.Collections;
+import java.util.List;
 import java.util.Scanner;
 
 public class Main {
@@ -29,20 +30,11 @@ public class Main {
 
     public static String getMaxPalindrome(String input) {
         String maxPalindrome = "";
-        String[] wordsArray = input.split("\\.|,| ");
+        String[] wordsArray = input.split("\\.| |,");
         for (String tempWord : wordsArray) {
             if (isPalindrome(tempWord) && tempWord.length() > maxPalindrome.length()) maxPalindrome = tempWord;
         }
         return maxPalindrome;
-    }
-
-    static int findIndexOf(String string, int startIndex, char... args) {
-        int index = string.length(), tempIndex;
-        for (char symbol : args) {
-            tempIndex = string.indexOf(symbol, startIndex + 1);
-            if (tempIndex != -1 && tempIndex < index) index = tempIndex;
-        }
-        return index;
     }
 
     static String reverseString(String string) {
@@ -53,8 +45,7 @@ public class Main {
             convertedString[ind] = convertedString[convertedString.length - 1 - ind];
             convertedString[convertedString.length - 1 - ind] = buffer;
         }
-        String result = String.valueOf(convertedString);
-        return result;
+        return String.valueOf(convertedString);
     }
 
 }
